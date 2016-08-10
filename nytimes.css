@@ -1,0 +1,11 @@
+body {
+	margin: 5%;
+}
+
+p {
+	display: inline-flex;
+}
+
+.citation-container {
+	margin: 5%;
+}
