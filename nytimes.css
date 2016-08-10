@@ -9,3 +9,11 @@ p {
 .citation-container {
 	margin: 5%;
 }
+
+.search {
+	margin-right: 1%;
+}
+
+.input-group {
+	display: block;
+}

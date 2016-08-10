@@ -19,6 +19,8 @@ $(function() {
 			method: 'GET',
 		}).done(function(result) {
 
+			$( '.citation-container' ).empty();
+
 			var results = result.response.docs;
 
 			$.each(results, function(index, val) {
@@ -76,8 +78,6 @@ $(function() {
 						.attr('href', webUrl)
 						.text( ' ' + webUrl)
 					);
-
-				console.log( $citationBlock );
 
 				$('body').append( $citationBlock );
 
