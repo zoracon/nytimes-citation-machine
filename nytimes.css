@@ -9,6 +9,9 @@ p {
 .citation-container {
 	margin: 5%;
 }
+	.citation-container:hover {
+		//
+	}
 
 .search {
 	margin-right: 1%;

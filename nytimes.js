@@ -2,7 +2,15 @@ $(function() {
 
 	'use strict';
 
-	var nyTimes = {};
+	var nyTimes = {
+		initialize : function(){
+			// nyTimes.copy();
+		},
+
+		copy : function(){
+			//
+		}
+	};
 
 	$( 'form' ).submit(function( event ) {
 
@@ -53,33 +61,46 @@ $(function() {
 				}
 
 				// Create Elements
+				var copyButton = $('<button>')
+					.addClass('btn')
+					.addClass('copy-action')
+					.text('copy!');
 
-				//console.log(lastName + firstName + middleName + pubDate + title + webUrl);
+				var link = $('<a>')
+					.attr( 'target', '_blank' )
+					.attr( 'href', webUrl )
+					.text( ' ' + webUrl) ;
 
 				var $citationBlock = $('<div>')
-					.addClass('citation-container')
-					.append( $('<p>')
-						.text(lastName)
+					.addClass( 'citation-container' )
+					.append( $('<div>')
+						.attr('id', 'citation')
+						.text( lastName + firstName + middleName + pubDate + title )
+						.append( link )
 					)
-					.append( $('<p>')
-						.text(firstName)
-					)
-					.append( $('<p>')
-						.text(middleName)
-					)
-					.append( $('<p>')
-						.text(pubDate)
-					)
-					.append( $('<p>')
-						.text(title)
-					)
-					.append( $('<a>')
-						.attr('target', '_blank')
-						.attr('href', webUrl)
-						.text( ' ' + webUrl)
-					);
+					.append(copyButton);
 
 				$('body').append( $citationBlock );
+
+				$('.copy-action').on('click', function(event) {
+					event.preventDefault();
+
+					var citationText = $(this);
+
+					console.log(citationText);
+
+					// $( copyButton ).attr('data-clipboard-target',  );
+
+					// var clipboard = new Clipboard($(this));
+
+					// clipboard.on('success', function(e) {
+					//     console.log(e);
+					// });
+
+					// clipboard.on('error', function(e) {
+					// 	console.log(e);
+					// });
+				});
 
 			});
 		}).fail(function(err) {
@@ -87,6 +108,5 @@ $(function() {
 		});
 
 		event.preventDefault();
-
 	});
 });
