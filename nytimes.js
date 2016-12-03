@@ -4,7 +4,7 @@ $(function() {
 
 	var nyTimes = {
 		initialize : function(){
-			// nyTimes.copy();
+			//
 		},
 
 		copy : function(){
@@ -19,7 +19,7 @@ $(function() {
 		var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
 		url += '?' + $.param({
 		  'q': nyTimes.searchTerm,
-		  'api-key': "30eb270dbc8954549a8f43b3c444585e:17:68821162"
+		  'api-key': "3167c94b938a48a3aa68b24828262a34"
 		});
 
 		$.ajax({
@@ -82,26 +82,34 @@ $(function() {
 
 				$('body').append( $citationBlock );
 
-				$('.copy-action').on('click', function(event) {
+				$('.copy-action').off().on('click', function(event) {
 					event.preventDefault();
 
-					var citationText = $(this);
+					// Dynamic Class
+					function makeid()
+					{
+					    var text = "";
+					    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-					console.log(citationText);
+					    for( var i=0; i < 5; i++ )
+					        text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-					// $( copyButton ).attr('data-clipboard-target',  );
+					    return text;
+					}
 
-					// var clipboard = new Clipboard($(this));
+					var rand = makeid();
+					var citationElement = $(this).prev('#citation');
+					$( citationElement ).addClass( rand );
 
-					// clipboard.on('success', function(e) {
-					//     console.log(e);
-					// });
+					// Set Up clipboard
+					var elementSelector = $( citationElement )[0].classList[0];
+					var elementSelectorFormatted = '.' + elementSelector;
 
-					// clipboard.on('error', function(e) {
-					// 	console.log(e);
-					// });
+					$( this ).attr('data-clipboard-target', elementSelectorFormatted);
+
+					var clipboard = new Clipboard( '.btn' );
+
 				});
-
 			});
 		}).fail(function(err) {
 			throw err;
