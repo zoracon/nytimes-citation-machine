@@ -160,4 +160,10 @@ $(function() {
 
 		event.preventDefault();
 	});
+
+	// Also submit on user change
+	$('.citation-choice').on('click', function(event) {
+		event.preventDefault();
+		$('form').submit();
+	});
 });
