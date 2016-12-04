@@ -55,14 +55,20 @@ $(function() {
 				var n = pubDate.indexOf('T');
 				pubDate = pubDate.substring(0, n != -1 ? n : pubDate.length);
 
-				var pubDate    = ' ( ' + pubDate + ' ) .';
-				var webUrl     = val.web_url;
+				var pubDate    = ' (' + pubDate + ') .';
+				var webUrl     = '<a href="val.web_url" target="_blank">' + val.web_url + '</a>';
 				var source     = val.source;
 				var publication = ' The New York Times, ';
 
 				var firstName  = '';
 				var middleName = '';
 				var lastName   = '';
+
+				function toTitleCase(str) {
+				    return str.replace(/(?:^|\s)\w/g, function(match) {
+				        return match.toUpperCase();
+				    });
+				}
 
 				if( val.byline ) {
 					if( val.byline.original ) {
@@ -76,7 +82,7 @@ $(function() {
 						}
 
 						if ( val.byline.person[0].lastname ) {
-							lastName =  val.byline.person[0].lastname+', ';
+							lastName =  toTitleCase( val.byline.person[0].lastname.toLowerCase() ) +', ';
 						}
 					}
 				}
@@ -88,12 +94,11 @@ $(function() {
 					.addClass('copy-action')
 					.text('Copy!');
 
-
 				var $citationBlock = $('<div>')
 					.addClass( 'citation-container' )
 					.append( $('<div>')
 						.attr('id', 'citation')
-						.text( lastName + firstName + middleName + pubDate + title + publication + webUrl )
+						.html( lastName + firstName + middleName + pubDate + title + publication.italics() + webUrl )
 					)
 					.append(copyButton);
 
@@ -104,12 +109,12 @@ $(function() {
 
 				if( nyTimes.dataFormat === 'mla' ) {
 					$('#mla').focus();
-					$('#citation').text( lastName + firstName + middleName + title + publication + webUrl + pubDate);
+					$('#citation').html( lastName + firstName + middleName + title + publication.italics() + webUrl + pubDate);
 				}
 
 				if( nyTimes.dataFormat === 'chicago' ) {
 					$('#chicago').focus();
-					$('#citation').text( lastName + firstName + middleName + title + publication + pubDate + webUrl);
+					$('#citation').html( lastName + firstName + middleName + title + publication.italics() + pubDate + webUrl);
 				}
 
 				$('body').append( $citationBlock );
