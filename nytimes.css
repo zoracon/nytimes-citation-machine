@@ -1,4 +1,4 @@
-body {
+body.container-fluid {
 	margin: 5%;
 }
 
@@ -19,4 +19,16 @@ p {
 
 .input-group {
 	display: block;
+}
+	.input-group .btn {
+		margin-top: 1%;
+	}
+
+.citation-choice:focus {
+	background-color: #5cb85c;
+	border-color: #5cb85c;
+}
+
+#myForm{
+	width: 50%
 }

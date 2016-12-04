@@ -2,16 +2,20 @@ $(function() {
 
 	'use strict';
 
-	var nyTimes = {
-		initialize : function(){
-			//
-		},
+	var nyTimes = {};
 
-		copy : function(){
-			//
-		}
-	};
+	// Default data format
+	$('body').attr('data-format', 'apa');
+	$('#apa').focus();
 
+	// Format citation change
+	$('.citation-choice').on('click', function(event) {
+		event.preventDefault();
+		var formatID = $( this ).attr('id');
+		$( 'body' ).attr('data-format', formatID);
+	});
+
+	// Form Submission
 	$( 'form' ).submit(function( event ) {
 
 		nyTimes.searchTerm = $('input[name="search"]').val();
@@ -22,10 +26,21 @@ $(function() {
 		  'api-key': "3167c94b938a48a3aa68b24828262a34"
 		});
 
+
+		// Indicate to user that results are being retrieved
+		$( document ).ajaxStart(function() {
+			$( '.submission' ).val('Getting Results');
+		});
+
+		// Call NY Times Article
 		$.ajax({
 			url: url,
 			method: 'GET',
 		}).done(function(result) {
+
+			nyTimes.dataFormat = $('body').attr('data-format');
+
+			$( '.submission' ).val('Submit');
 
 			$( '.citation-container' ).empty();
 
@@ -34,10 +49,16 @@ $(function() {
 			$.each(results, function(index, val) {
 
 				// Grab Data
-				var title      = val.headline.main +' ';
-				var pubDate    = ' ( ' + val.pub_date + ' ) .';
+				var title      = '"' + val.headline.main +'", ';
+
+				var pubDate = val.pub_date;
+				var n = pubDate.indexOf('T');
+				pubDate = pubDate.substring(0, n != -1 ? n : pubDate.length);
+
+				var pubDate    = ' ( ' + pubDate + ' ) .';
 				var webUrl     = val.web_url;
 				var source     = val.source;
+				var publication = ' The New York Times, ';
 
 				var firstName  = '';
 				var middleName = '';
@@ -63,31 +84,43 @@ $(function() {
 				// Create Elements
 				var copyButton = $('<button>')
 					.addClass('btn')
+					.addClass('btn-primary')
 					.addClass('copy-action')
-					.text('copy!');
+					.text('Copy!');
 
-				var link = $('<a>')
-					.attr( 'target', '_blank' )
-					.attr( 'href', webUrl )
-					.text( ' ' + webUrl) ;
 
 				var $citationBlock = $('<div>')
 					.addClass( 'citation-container' )
 					.append( $('<div>')
 						.attr('id', 'citation')
-						.text( lastName + firstName + middleName + pubDate + title )
-						.append( link )
+						.text( lastName + firstName + middleName + pubDate + title + publication + webUrl )
 					)
 					.append(copyButton);
+
+				// Citation switch (data and focus for user experience)
+				if( nyTimes.dataFormat === 'apa' ) {
+					$('#apa').focus();
+				}
+
+				if( nyTimes.dataFormat === 'mla' ) {
+					$('#mla').focus();
+					$('#citation').text( lastName + firstName + middleName + title + publication + webUrl + pubDate);
+				}
+
+				if( nyTimes.dataFormat === 'chicago' ) {
+					$('#chicago').focus();
+					$('#citation').text( lastName + firstName + middleName + title + publication + pubDate + webUrl);
+				}
 
 				$('body').append( $citationBlock );
 
 				$('.copy-action').off().on('click', function(event) {
 					event.preventDefault();
 
+					var currentButton = $( this );
+
 					// Dynamic Class
-					function makeid()
-					{
+					function makeid() {
 					    var text = "";
 					    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
@@ -98,20 +131,30 @@ $(function() {
 					}
 
 					var rand = makeid();
-					var citationElement = $(this).prev('#citation');
+					var citationElement = $( currentButton ).prev('#citation');
 					$( citationElement ).addClass( rand );
 
 					// Set Up clipboard
 					var elementSelector = $( citationElement )[0].classList[0];
 					var elementSelectorFormatted = '.' + elementSelector;
 
-					$( this ).attr('data-clipboard-target', elementSelectorFormatted);
+					$( currentButton ).attr('data-clipboard-target', elementSelectorFormatted);
 
 					var clipboard = new Clipboard( '.btn' );
+
+					// User feedback for when button is copied
+					clipboard.on('success', function(e) {
+						$( currentButton ).text('Copied!').removeClass('btn-primary').addClass('btn-success');
+						$('.copy-action').not( currentButton ).text('Copy!').removeClass('btn-success').addClass('btn-primary');
+
+					    e.clearSelection();
+					    $( citationElement ).removeClass( rand );
+					});
 
 				});
 			});
 		}).fail(function(err) {
+			$( '.submission' ).val('Submit');
 			throw err;
 		});
 
