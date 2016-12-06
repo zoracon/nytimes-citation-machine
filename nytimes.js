@@ -42,7 +42,7 @@ $(function() {
 
 			$( '.submission' ).val('Submit');
 
-			$( '.citation-container' ).empty();
+			$( '.citation-container' ).remove();
 
 			var results = result.response.docs;
 

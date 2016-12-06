@@ -13,6 +13,11 @@ p {
 		//
 	}
 
+	#citation {
+		overflow-wrap: break-word;
+		width: 100%;
+	}
+
 .search {
 	margin-right: 1%;
 }
@@ -32,3 +37,15 @@ p {
 #myForm{
 	width: 50%
 }
+
+@media (max-width: 468px) {
+
+.input-group .btn {
+	clear: both;
+	float: left;
+	margin-top: 5%;
+}
+
+}
+
+
