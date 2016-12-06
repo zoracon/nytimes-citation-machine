@@ -49,20 +49,20 @@ $(function() {
 			$.each(results, function(index, val) {
 
 				// Grab Data
-				var title      = '"' + val.headline.main +'", ';
+				var title       = '"' + val.headline.main +'", ';
 
-				var pubDate = val.pub_date;
-				var n = pubDate.indexOf('T');
-				pubDate = pubDate.substring(0, n != -1 ? n : pubDate.length);
+				var pubDate     = val.pub_date;
+				var n           = pubDate.indexOf('T');
+				pubDate         = pubDate.substring(0, n != -1 ? n : pubDate.length);
 
-				var pubDate    = ' (' + pubDate + ') .';
-				var webUrl     = '<a href="'+ val.web_url + '" target="_blank">' + val.web_url + '</a>';
-				var source     = val.source;
+				var pubDate     = ' (' + pubDate + ') .';
+				var webUrl      = '<a href="'+ val.web_url + '" target="_blank">' + val.web_url + '</a>';
+				var source      = val.source;
 				var publication = ' The New York Times, ';
 
-				var firstName  = '';
-				var middleName = '';
-				var lastName   = '';
+				var firstName   = '';
+				var middleName  = '';
+				var lastName    = '';
 
 				function toTitleCase(str) {
 				    return str.replace(/(?:^|\s)\w/g, function(match) {
@@ -102,7 +102,7 @@ $(function() {
 					)
 					.append(copyButton);
 
-				console.log($('#citation'));
+				$('body').append( $citationBlock );
 
 				// Citation switch (data and focus for user experience)
 				if( nyTimes.dataFormat === 'apa' ) {
@@ -111,15 +111,13 @@ $(function() {
 
 				if( nyTimes.dataFormat === 'mla' ) {
 					$('#mla').focus();
-					$('#citation').html( lastName + firstName + middleName + title + publication.italics() + webUrl + pubDate);
+					$( $citationBlock.children('#citation') ).html( lastName + firstName + middleName + title + publication.italics() + webUrl + pubDate);
 				}
 
 				if( nyTimes.dataFormat === 'chicago' ) {
 					$('#chicago').focus();
-					$('#citation').html( lastName + firstName + middleName + title + publication.italics() + pubDate + webUrl);
+					$( $citationBlock.children('#citation') ).html( lastName + firstName + middleName + title + publication.italics() + pubDate + webUrl);
 				}
-
-				$('body').append( $citationBlock );
 
 				$('.copy-action').off().on('click', function(event) {
 					event.preventDefault();
