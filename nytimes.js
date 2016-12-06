@@ -102,6 +102,8 @@ $(function() {
 					)
 					.append(copyButton);
 
+				$('body').append( $citationBlock );
+
 				// Citation switch (data and focus for user experience)
 				if( nyTimes.dataFormat === 'apa' ) {
 					$('#apa').focus();
@@ -109,15 +111,13 @@ $(function() {
 
 				if( nyTimes.dataFormat === 'mla' ) {
 					$('#mla').focus();
-					$('#citation').html( lastName + firstName + middleName + title + publication.italics() + webUrl + pubDate);
+					$( $citationBlock.children('#citation') ).html( lastName + firstName + middleName + title + publication.italics() + webUrl + pubDate);
 				}
 
 				if( nyTimes.dataFormat === 'chicago' ) {
 					$('#chicago').focus();
-					$('#citation').html( lastName + firstName + middleName + title + publication.italics() + pubDate + webUrl);
+					$( $citationBlock.children('#citation') ).html( lastName + firstName + middleName + title + publication.italics() + pubDate + webUrl);
 				}
-
-				$('body').append( $citationBlock );
 
 				$('.copy-action').off().on('click', function(event) {
 					event.preventDefault();
