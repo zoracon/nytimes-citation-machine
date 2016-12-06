@@ -56,7 +56,7 @@ $(function() {
 				pubDate = pubDate.substring(0, n != -1 ? n : pubDate.length);
 
 				var pubDate    = ' (' + pubDate + ') .';
-				var webUrl     = '<a href="val.web_url" target="_blank">' + val.web_url + '</a>';
+				var webUrl     = '<a href="'+ val.web_url + '" target="_blank">' + val.web_url + '</a>';
 				var source     = val.source;
 				var publication = ' The New York Times, ';
 
@@ -101,6 +101,8 @@ $(function() {
 						.html( lastName + firstName + middleName + pubDate + title + publication.italics() + webUrl )
 					)
 					.append(copyButton);
+
+				console.log($('#citation'));
 
 				// Citation switch (data and focus for user experience)
 				if( nyTimes.dataFormat === 'apa' ) {
