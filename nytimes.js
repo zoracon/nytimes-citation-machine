@@ -11,7 +11,9 @@ $(function() {
 	// Format citation change
 	$('.citation-choice').on('click', function(event) {
 		event.preventDefault();
-		var formatID = $( this ).attr('id');
+
+		// ES6: Let
+		let formatID = $( this ).attr('id');
 		$( 'body' ).attr('data-format', formatID);
 	});
 
@@ -49,14 +51,16 @@ $(function() {
 			$.each(results, function(index, val) {
 
 				// Grab Data
-				var title       = '"' + val.headline.main +'", ';
+
+				// ES6: Template literals
+				var title       = `"${val.headline.main}", `;
 
 				var pubDate     = val.pub_date;
 				var n           = pubDate.indexOf('T');
 				pubDate         = pubDate.substring(0, n != -1 ? n : pubDate.length);
 
-				var pubDate     = ' (' + pubDate + ') .';
-				var webUrl      = '<a href="'+ val.web_url + '" target="_blank">' + val.web_url + '</a>';
+				var pubDate     = ` ( ${pubDate} ) .`;
+				var webUrl      = `<a href="${val.web_url}" target="_blank"> ${val.web_url} </a>`;
 				var source      = val.source;
 				var publication = ' The New York Times, ';
 
@@ -65,9 +69,9 @@ $(function() {
 				var lastName    = '';
 
 				function toTitleCase(str) {
-				    return str.replace(/(?:^|\s)\w/g, function(match) {
-				        return match.toUpperCase();
-				    });
+
+					// ES6: Arrow functions
+				    return str.replace(/(?:^|\s)\w/g, (match) => match.toUpperCase() );
 				}
 
 				if( val.byline ) {
@@ -158,7 +162,7 @@ $(function() {
 
 				});
 			});
-		}).fail(function(err) {
+		}).fail( function(err) {
 			$( '.submission' ).val('Submit');
 			throw err;
 		});
