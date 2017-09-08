@@ -72,18 +72,7 @@ $(function() {
 
 				if( val.byline ) {
 					if( val.byline.original ) {
-
-						if( val.byline.person[0].firstname ) {
-							firstName = val.byline.person[0].firstname + '. ';
-						}
-
-						if( val.byline.person[0].middlename ) {
-							middleName =  val.byline.person[0].middlename;
-						}
-
-						if ( val.byline.person[0].lastname ) {
-							lastName =  toTitleCase( val.byline.person[0].lastname.toLowerCase() ) +', ';
-						}
+						name =  val.byline.original + '. ';
 					}
 				}
 
@@ -98,7 +87,7 @@ $(function() {
 					.addClass( 'citation-container' )
 					.append( $('<div>')
 						.attr('id', 'citation')
-						.html( lastName + firstName + middleName + pubDate + title + publication.italics() + webUrl )
+						.html( name + pubDate + title + publication.italics() + webUrl )
 					)
 					.append(copyButton);
 
@@ -111,12 +100,12 @@ $(function() {
 
 				if( nyTimes.dataFormat === 'mla' ) {
 					$('#mla').focus();
-					$( $citationBlock.children('#citation') ).html( lastName + firstName + middleName + title + publication.italics() + webUrl + pubDate);
+					$( $citationBlock.children('#citation') ).html( name + title + publication.italics() + webUrl + pubDate);
 				}
 
 				if( nyTimes.dataFormat === 'chicago' ) {
 					$('#chicago').focus();
-					$( $citationBlock.children('#citation') ).html( lastName + firstName + middleName + title + publication.italics() + pubDate + webUrl);
+					$( $citationBlock.children('#citation') ).html( name + title + publication.italics() + pubDate + webUrl);
 				}
 
 				$('.copy-action').off().on('click', function(event) {
